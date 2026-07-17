@@ -1,0 +1,43 @@
+{
+  "product": "astrology",
+  "created": "2026-07-09",
+  "pipeline_version": 2,
+  "mode": "greenfield",
+  "current_stage": "9-release",
+  "stack": "web-ts",
+  "budget": {
+    "max_steps": 200,
+    "used_steps": 2,
+    "note": "撞上限则存盘、优雅停止、可 resume（见 CLAUDE.md 第7条）"
+  },
+  "activity": {
+    "log": "activity-log.md",
+    "last_entry": "2026-07-12T00:00:00Z"
+  },
+  "gates_policy": {
+    "human_required": ["release-preview"],
+    "note": "唯一强制人工关口=发布前预览确认；其余自动，触发保险时才停"
+  },
+  "intake_summary": {
+    "platform": "web",
+    "core_features": ["星盘生成（本命盘）", "每日/每周运势", "行星/星座百科"],
+    "ui_style": "神秘暗色系",
+    "tech_preference": "由AI选定"
+  },
+  "stages": {
+    "0-bootstrap":    { "status": "done",    "gate": "auto",  "gate_passed": true,  "outputs": ["PROJECT.md", "sdd-state.json", "activity-log.md"] },
+    "1-discovery":    { "status": "done",    "gate": "auto",  "gate_passed": true,  "agent": "discovery-analyst",       "outputs": ["discovery.md"], "decisions": {"UQ-1": "no-account", "UQ-2": "offline-js-ephemeris", "UQ-3": "offline-city-library", "UQ-4": "third-party-api"} },
+    "2-bdd":          { "status": "done",         "gate": "auto",  "gate_passed": true, "agent": "gherkin-author",          "outputs": ["features/natal-chart.feature","features/horoscope.feature","features/encyclopedia.feature"] },
+    "3-requirements": { "status": "done",    "gate": "auto",  "gate_passed": true, "agent": "requirements-engineer",   "outputs": ["requirements.md"] },
+    "4-spec":         { "status": "done",    "gate": "auto",  "gate_passed": true, "agent": "spec-architect",          "outputs": ["spec/functional.md","spec/data.md","spec/api.md","spec/ui.md","spec/nfr.md","spec/index.md"] },
+    "5-architecture": { "status": "done",    "gate": "auto",  "gate_passed": true,  "agent": "stack-advisor",           "outputs": ["architecture.md"], "decisions": {"pluto_precision": "approx-ok", "cors": "vercel-fn-proxy", "city_db": "global-2000"} },
+    "6-implement":    { "status": "done",         "gate": "auto",  "gate_passed": true, "agent": "implementer+qa-test",  "outputs": ["src/", "tests/", "dist/"], "metrics": {"tests": 118, "coverage_lines": "97.68%", "coverage_branches": "89.38%", "build": "ok"} },
+    "7-review":       { "status": "done",    "gate": "auto",  "gate_passed": true, "agent": "code-reviewer+security-reviewer", "outputs": ["review-report.md"], "blockers_fixed": ["B1-geocoder-prefix"] },
+    "8-evaluation":   { "status": "pending", "gate": "auto",  "gate_passed": false, "agent": "evaluator",               "outputs": ["evaluation-report.md"] },
+    "9-release":      { "status": "done",    "gate": "human", "gate_passed": true,  "agent": "release-manager",         "outputs": ["release-notes.md", "CHANGELOG.md"], "human_gate": "release-preview", "version": "v1.1.0" }
+  },
+  "traceability": {
+    "note": "维护 FR/NFR ⇄ 场景 ⇄ SPEC ⇄ TEST；change 模式的影响分析依赖它"
+  },
+  "change_requests": []
+}

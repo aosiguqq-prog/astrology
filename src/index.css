@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+
+/* SPEC-U-01 暗色神秘系色板（Tailwind v4 @theme 设计令牌） */
+@theme {
+  --color-bg-primary: #1a1033;
+  --color-bg-secondary: #0d1b3e;
+  --color-bg-panel: #241640;
+  --color-text-primary: #ede9f5;
+  --color-text-secondary: #a99fc7;
+  --color-gold: #e8c36b;
+  --color-gold-light: #f5e7c4;
+  --color-accent-red: #f0868b;
+
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(232, 195, 107, 0.06), transparent 40%),
+    linear-gradient(160deg, var(--color-bg-primary), var(--color-bg-secondary));
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+}
+
+/* 金色旋转加载动画 */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 1s linear infinite;
+}
